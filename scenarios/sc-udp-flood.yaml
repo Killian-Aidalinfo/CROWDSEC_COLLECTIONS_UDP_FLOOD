@@ -1,7 +1,11 @@
-filter: "evt.Meta.log_type == 'log_udp_stream'"
-distinct: "evt.Parsed.source_ip"
-groupby: "evt.Parsed.source_ip"
-capacity: 100
-leakspeed: "1s"
+sudo cat /opt/crowdsec/scenarios/sc-udp-flood.yaml
+type: leaky
 name: sc-udp-flood
-description: "Detecte plus de 100 connexions par seconde depuis la même IP"
+description: "Detect UDP flood"
+filter: "evt.Meta.log_type == 'udp-stream-log'"
+groupby: "evt.Meta.source_ip"
+capacity: 10
+leakspeed: "30s"
+blackhole: 5m
+labels:
+  remediation: true
