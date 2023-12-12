@@ -1,0 +1,7 @@
+filter: "evt.Line.Raw contains 'Handling UDP stream'"
+name: udp-flood
+grok:
+  pattern: 'time="%{DATA:time}" level=%{LOGLEVEL:level} msg="Handling UDP stream from %{IP:source_ip}:%{NUMBER:source_port} to %{IP:destination_ip}:%{NUMBER:destination_port}"'
+statics:
+  - meta: log_type
+    value: log_udp_stream

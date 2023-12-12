@@ -1,0 +1,7 @@
+filter: "evt.Meta.log_type == 'log_udp_stream'"
+distinct: "evt.Parsed.source_ip"
+groupby: "evt.Parsed.source_ip"
+capacity: 100
+leakspeed: "1s"
+name: sc-udp-flood
+description: "Detecte plus de 100 connexions par seconde depuis la même IP"

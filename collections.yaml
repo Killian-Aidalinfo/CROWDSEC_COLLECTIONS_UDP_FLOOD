@@ -1,0 +1,6 @@
+name: udp-flood-collection
+description: "Collection pour parser et détecter les attaques UDP"
+parsers:
+  - s01-parse/parser-udp-flood.yaml
+scenarios:
+  - sc-udp-flood.yaml
