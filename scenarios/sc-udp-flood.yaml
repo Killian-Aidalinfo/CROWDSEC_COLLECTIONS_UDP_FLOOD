@@ -4,7 +4,7 @@ name: sc-udp-flood
 description: "Detect UDP flood"
 filter: "evt.Meta.log_type == 'udp-stream-log'"
 groupby: "evt.Meta.source_ip"
-capacity: 10
+capacity: 1
 leakspeed: "30s"
 blackhole: 5m
 labels:
