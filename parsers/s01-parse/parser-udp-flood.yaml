@@ -1,51 +1,20 @@
-# Parser Configuration File
-# name: udp-flood-parser
-# description: "Parser for handling specific UDP stream logs"
-
-# filter: "evt.Line.Raw contains 'Handling UDP stream from'"
-# onsuccess: next_stage
-# nodes:
-# nodes:
-#  - grok:
-#   - grok:
-#     pattern: 'time="%{TIMESTAMP_ISO8601:time}" level=%{LOGLEVEL:level} msg="Handling UDP stream from %{IP:source_ip}:%{NUMBER:source_port:int} to %{IP:destination_ip}:%{NUMBER:destination_port:int}"'
-#     apply_on: message
-#     statics:
-#       - meta: log_type
-#         value: udp-stream-log
-#       - target: evt.StrTime
-#         expression: evt.Parsed.time
-#       - meta: source_ip
-#         expression: evt.Parsed.source_ip
-#       - meta: source_port
-#         expression: evt.Parsed.source_port
-#       - meta: destination_ip
-#         expression: evt.Parsed.destination_ip
-#       - meta: destination_port
-#         expression: evt.Parsed.destination_port
-# statics:
-#   - meta: log_type
-#     value: udp-stream-log
-#   - meta: source_ip
-#     expression: evt.Parsed.source_ip
-name: crowdsecurity/udp-flood
-description: "Parser for handling specific UDP stream logs"
+onsuccess: next_stage
 debug: true
-filter: "evt.Parsed.program startsWith 'udplog'"
-grok:
-  pattern: 'msg="Handling UDP stream from %{IP:source_ip}:%{NUMBER:source_port:int} to %{IP:destination_ip}:%{NUMBER:destination_port:int}"'
-  apply_on: message
-  # statics:
-  #   - meta: log_type
-  #     value: udplog
-  #   - meta: source_ip
-  #     expression: evt.Parsed.source_ip
-  #   - meta: source_port
-  #     expression: evt.Parsed.source_port
-  #   - meta: destination_ip
-  #     expression: evt.Parsed.destination_ip
-  #   - meta: destination_port
-  #     expression: evt.Parsed.destination_port
+name: Aidalinfo/udp-flood-traefik
+description: "Parse udp traefik logs"
+filter: "evt.Parsed.program == 'udptraefik'"
+nodes:
+  - grok:
+      pattern: 'time="%{TIMESTAMP_ISO8601:time}" level=%{LOGLEVEL:level} msg="Handling UDP stream from %{IP:source_ip}:%{NUMBER:source_port} to %{IP:destination_ip}:%{NUMBER:destination_port}"'
+      apply_on: message
+      statics:
+        - meta: log_type
+          value: traefik_udp
+
 statics:
-   - meta: source_ip
-     expression: evt.Parsed.source_ip
+    - meta: service
+      value: traefik
+    - meta: source_ip
+      expression: "evt.Parsed.source_ip"
+    - target: evt.StrTime
+      expression: evt.Parsed.time
